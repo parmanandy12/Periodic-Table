@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Periodic Table — Holographic Edition</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Animated Background -->
+<div class="bg-grid"></div>
+<div class="particles" id="particles"></div>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <h1 class="title">⚛ <span>Periodic</span> Table</h1>
+    <p class="subtitle">118 Elements — Interactive Holographic Edition</p>
+    <div class="controls">
+      <button class="ctrl-btn active" data-mode="default" onclick="setMode('default')">Default</button>
+      <button class="ctrl-btn" data-mode="roll" onclick="setMode('roll')">🎲 Roll</button>
+      <button class="ctrl-btn" data-mode="flip" onclick="setMode('flip')">🔄 Flip</button>
+      <button class="ctrl-btn" data-mode="cube" onclick="setMode('cube')">🎲 Cube</button>
+      <button class="ctrl-btn" data-mode="tilt" onclick="setMode('tilt')">↗ Tilt</button>
+      <button class="ctrl-btn" data-mode="card" onclick="setMode('card')">🃏 Card</button>
+    </div>
+  </div>
+</header>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item" style="--c:#ff6b6b">Alkali Metals</div>
+  <div class="legend-item" style="--c:#ff9f43">Alkaline Earth</div>
+  <div class="legend-item" style="--c:#ffd32a">Transition Metals</div>
+  <div class="legend-item" style="--c:#0abde3">Post-Transition</div>
+  <div class="legend-item" style="--c:#48dbfb">Metalloids</div>
+  <div class="legend-item" style="--c:#1dd1a1">Nonmetals</div>
+  <div class="legend-item" style="--c:#54a0ff">Halogens</div>
+  <div class="legend-item" style="--c:#a29bfe">Noble Gases</div>
+  <div class="legend-item" style="--c:#fd79a8">Lanthanides</div>
+  <div class="legend-item" style="--c:#e17055">Actinides</div>
+</div>
+
+<!-- Periodic Table Grid -->
+<main class="table-container" id="tableContainer">
+  <div class="periodic-grid" id="periodicGrid"></div>
+</main>
+
+<!-- Element Detail Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal" id="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-header" id="modalHeader">
+      <div class="modal-symbol" id="modalSymbol">H</div>
+      <div class="modal-info">
+        <div class="modal-name" id="modalName">Hydrogen</div>
+        <div class="modal-number" id="modalNumber">#1</div>
+        <div class="modal-group-label" id="modalGroupLabel">Nonmetal</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid">
+        <div class="modal-stat"><span>Atomic Mass</span><strong id="mMass">1.008</strong></div>
+        <div class="modal-stat"><span>Period</span><strong id="mPeriod">1</strong></div>
+        <div class="modal-stat"><span>Group</span><strong id="mGroupN">1</strong></div>
+        <div class="modal-stat"><span>Electrons</span><strong id="mElectrons">1</strong></div>
+        <div class="modal-stat"><span>State</span><strong id="mState">Gas</strong></div>
+        <div class="modal-stat"><span>Config</span><strong id="mConfig">1s¹</strong></div>
+      </div>
+      <div class="modal-desc" id="modalDesc">The lightest and most abundant element in the universe.</div>
+    </div>
+    <div class="modal-footer">
+      <div class="bohr-model" id="bohrModel"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Markdown Table Section -->
+<section class="markdown-section">
+  <h2>📊 First 20 Elements — Data Table</h2>
+  <p class="md-note">Copy and paste into Excel / Google Sheets:</p>
+  <pre class="md-table" id="markdownTable"></pre>
+</section>
+
+<!-- Alternative Layouts Section -->
+<section class="alt-layouts">
+  <h2>🌀 Alternative Periodic Table Concepts</h2>
+  <div class="concept-cards">
+    <div class="concept-card">
+      <div class="concept-icon">🌀</div>
+      <h3>Spiral Layout</h3>
+      <p>Elements arranged in an Archimedean spiral by atomic number. Chemical families appear as radial "spokes." Periods become revolutions of the spiral, making periodicity visually intuitive.</p>
+      <div class="pros-cons">
+        <div class="pros"><strong>✅ Pros</strong><br>Continuity of atomic number, shows trends radially, visually engaging for students</div>
+        <div class="cons"><strong>❌ Cons</strong>Hard to read group relationships at a glance, non-standard, difficult to print compactly</div>
+      </div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🔺</div>
+      <h3>3D Pyramid</h3>
+      <p>Elements stacked in a three-dimensional pyramid where height represents energy level, horizontal layers are periods, and faces group elements by orbital type (s, p, d, f blocks).</p>
+      <div class="pros-cons">
+        <div class="pros"><strong>✅ Pros</strong><br>Intuitive energy visualization, orbital blocks become physical faces, memorable 3D structure</div>
+        <div class="cons"><strong>❌ Cons</strong>Requires 3D medium to be effective, back elements hidden in flat view, complex to build</div>
+      </div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">⭕</div>
+      <h3>Concentric Circles</h3>
+      <p>Rings represent electron shells. Elements in the same ring share the same outer shell count. Noble gases anchor each ring-end. Chemical families radiate outward as sectors.</p>
+      <div class="pros-cons">
+        <div class="pros"><strong>✅ Pros</strong><br>Directly maps to Bohr model, electron shells are visually obvious, great for beginners</div>
+        <div class="cons"><strong>❌ Cons</strong>Outer rings become very crowded, atomic number sequence harder to follow, takes large space</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI Image Prompt Section -->
+<section class="image-prompt-section">
+  <h2>🎨 AI Image Generation Prompt</h2>
+  <div class="prompt-box">
+    <p id="aiPrompt">A futuristic, holographic 3D periodic table floating in a high-tech dark laboratory. The elements are glowing with vibrant neon colors based on their chemical groups. Intricate data visualizations and light particles swirl around the table. Cinematic lighting, ultra-detailed, photorealistic, 8k resolution, sci-fi aesthetic.</p>
+    <button class="copy-btn" onclick="copyPrompt()">📋 Copy Prompt</button>
+  </div>
+</section>
+
+<script src="elements.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
